@@ -26,6 +26,8 @@
   "homepage": "https://github.com/zkochan/hexi#readme",
   "dependencies": {
     "express": "^4.13.3",
-    "remi": "^0.3.0"
+    "remi": "^0.3.0",
+    "remi-decorate": "0.0.0",
+    "remi-expose": "0.0.0"
   }
 }
