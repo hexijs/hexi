@@ -20,7 +20,7 @@ describe('server route', function() {
       },
     })
 
-    request(server._app)
+    request(server.express)
       .get('/foo')
       .expect(200, 'bar', done)
   })
@@ -41,7 +41,7 @@ describe('server route', function() {
       },
     })
 
-    request(server._app)
+    request(server.express)
       .get('/foo')
       .expect(200, 'bar', done)
   })
@@ -68,7 +68,7 @@ describe('server route', function() {
       },
     })
 
-    request(server._app)
+    request(server.express)
       .get('/foo')
       .expect(200, 'bar', done)
   })
