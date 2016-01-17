@@ -31,6 +31,7 @@
     "remi": "^0.3.0",
     "remi-decorate": "0.0.0",
     "remi-expose": "0.0.0",
+    "remi-realm": "0.0.0",
     "sequencify": "0.0.7"
   },
   "devDependencies": {
