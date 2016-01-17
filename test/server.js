@@ -2,6 +2,7 @@
 const expect = require('chai').expect
 const Server = require('../lib/server')
 const request = require('supertest')
+const plugiator = require('plugiator')
 
 describe('server route', function() {
   let server
@@ -81,5 +82,26 @@ describe('server route', function() {
         handler(req, res) {},
       })
     ).to.throw(Error, 'does-not-exist task doesn\'t exist')
+  })
+})
+
+describe('Server', function() {
+  let server
+
+  beforeEach(function() {
+    server = new Server()
+  })
+
+  it('should pass route, task methods to the plugin\'s serve object', function(done) {
+    return server.register([
+      {
+        register: plugiator.anonymous((server, opts) => {
+          expect(server.route).to.be.a('function')
+          expect(server.task).to.be.a('function')
+          expect(server.register).to.be.a('function')
+          done()
+        }),
+      },
+    ])
   })
 })
