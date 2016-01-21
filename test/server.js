@@ -25,6 +25,26 @@ describe('server route', function() {
       .expect(200, 'bar', done)
   })
 
+  it('should execute listen to all method requests passed', function(done) {
+    server.route({
+      method: ['GET', 'POST'],
+      path: '/foo',
+      handler(req, res) {
+        res.send('bar')
+      },
+    })
+
+    request(server.express)
+      .get('/foo')
+      .expect(200, 'bar', function(err) {
+        if (err) return done(err)
+
+        request(server.express)
+          .post('/foo')
+          .expect(200, 'bar', done)
+      })
+  })
+
   it('should execute task', function(done) {
     server.task('task', (req, res, next) => {
       req.task = 1
