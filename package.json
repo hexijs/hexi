@@ -10,7 +10,9 @@
   "scripts": {
     "test": "mocha test/{**/,/}*.js",
     "coverage": "istanbul cover _mocha test/{**/,/}*.js -- -R spec",
-    "coveralls": "istanbul cover _mocha test/{**/,/}*.js --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "precoveralls": "istanbul cover _mocha test/{**/,/}*.js --report lcovonly -- -R spec && npm i coveralls@2",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "postcoveralls": "rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
@@ -38,7 +40,6 @@
   },
   "devDependencies": {
     "chai": "^3.4.1",
-    "coveralls": "^2.11.6",
     "istanbul": "^0.4.2",
     "mocha": "^2.3.4",
     "plugiator": "^0.1.1",
