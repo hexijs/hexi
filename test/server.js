@@ -68,6 +68,50 @@ describe('server route', function() {
       .expect(200, 'bar', done)
   })
 
+  it('should always pass settings to task', function(done) {
+    let task = sinon.spy((req, res, next) => {
+      expect(req.route.settings).to.exist
+      next()
+    })
+    server.task('task', task)
+
+    server.route({
+      method: 'GET',
+      path: '/foo',
+      task: ['task'],
+      handler(req, res) {
+        expect(task).to.have.been.calledOnce
+        res.send('bar')
+      },
+    })
+
+    request(server.express)
+      .get('/foo')
+      .expect(200, 'bar', done)
+  })
+
+  it('should execute task and default task', function(done) {
+    let defaultTask = sinon.spy((req, res, next) => next())
+    server.task('default', defaultTask)
+
+    let task = sinon.spy((req, res, next) => next())
+    server.task('task', task)
+
+    server.route({
+      method: 'GET',
+      path: '/foo',
+      task: ['task'],
+      handler(req, res) {
+        expect(defaultTask).to.have.been.calledBefore(task)
+        res.send('bar')
+      },
+    })
+
+    request(server.express)
+      .get('/foo')
+      .expect(200, 'bar', done)
+  })
+
   it('should execute default task when none specified', function(done) {
     let defaultTask = sinon.spy((req, res, next) => next())
     server.task('default', defaultTask)
@@ -86,16 +130,23 @@ describe('server route', function() {
       .expect(200, 'bar', done)
   })
 
-  it('should not execute default task when false passed', function(done) {
+  it('should not execute default task when detached passed', function(done) {
     let defaultTask = sinon.spy((req, res, next) => next())
     server.task('default', defaultTask)
+
+    let task = sinon.spy((req, res, next) => next())
+    server.task('task', task)
 
     server.route({
       method: 'GET',
       path: '/foo',
-      task: false,
+      config: {
+        detached: true,
+      },
+      task: 'task',
       handler(req, res) {
         expect(defaultTask).to.have.not.been.called
+        expect(task).to.have.been.calledOnce
         res.send('bar')
       },
     })
