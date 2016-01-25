@@ -1,8 +1,12 @@
 'use strict'
-const expect = require('chai').expect
+const chai = require('chai')
+const expect = chai.expect
 const Server = require('../lib/server')
 const request = require('supertest')
 const plugiator = require('plugiator')
+const sinon = require('sinon')
+
+chai.use(require('sinon-chai'))
 
 describe('server route', function() {
   let server
@@ -46,17 +50,15 @@ describe('server route', function() {
   })
 
   it('should execute task', function(done) {
-    server.task('task', (req, res, next) => {
-      req.task = 1
-      next()
-    })
+    let task = sinon.spy((req, res, next) => next())
+    server.task('task', task)
 
     server.route({
       method: 'GET',
       path: '/foo',
       task: ['task'],
       handler(req, res) {
-        expect(req.task).to.eq(1)
+        expect(task).to.have.been.calledOnce
         res.send('bar')
       },
     })
@@ -67,16 +69,14 @@ describe('server route', function() {
   })
 
   it('should execute default task when none specified', function(done) {
-    server.task('default', (req, res, next) => {
-      req.task = 1
-      next()
-    })
+    let defaultTask = sinon.spy((req, res, next) => next())
+    server.task('default', defaultTask)
 
     server.route({
       method: 'GET',
       path: '/foo',
       handler(req, res) {
-        expect(req.task).to.eq(1)
+        expect(defaultTask).to.have.been.calledOnce
         res.send('bar')
       },
     })
@@ -87,17 +87,15 @@ describe('server route', function() {
   })
 
   it('should not execute default task when false passed', function(done) {
-    server.task('default', (req, res, next) => {
-      req.task = 1
-      next()
-    })
+    let defaultTask = sinon.spy((req, res, next) => next())
+    server.task('default', defaultTask)
 
     server.route({
       method: 'GET',
       path: '/foo',
       task: false,
       handler(req, res) {
-        expect(req.task).to.not.exist
+        expect(defaultTask).to.have.not.been.called
         res.send('bar')
       },
     })
@@ -108,23 +106,18 @@ describe('server route', function() {
   })
 
   it('should execute several dependent tasks', function(done) {
-    server.task('main', ['dependency'], (req, res, next) => {
-      expect(req.dep).to.eq(1)
-      req.main = 1
-      next()
-    })
+    let mainTask = sinon.spy((req, res, next) => next())
+    server.task('main', ['dependency'], mainTask)
 
-    server.task('dependency', (req, res, next) => {
-      req.dep = 1
-      next()
-    })
+    let dependencyTask = sinon.spy((req, res, next) => next())
+    server.task('dependency', dependencyTask)
 
     server.route({
       method: 'GET',
       path: '/foo',
       task: ['main'],
       handler(req, res) {
-        expect(req.main).to.eq(1)
+        expect(dependencyTask).to.have.been.calledBefore(mainTask)
         res.send('bar')
       },
     })
@@ -137,17 +130,15 @@ describe('server route', function() {
   it('should execute several dependent tasks. One of the task is just a group', function(done) {
     server.task('main', ['dependency'])
 
-    server.task('dependency', (req, res, next) => {
-      req.dep = 1
-      next()
-    })
+    let dependencyTask = sinon.spy((req, res, next) => next())
+    server.task('dependency', dependencyTask)
 
     server.route({
       method: 'GET',
       path: '/foo',
       task: ['main'],
       handler(req, res) {
-        expect(req.dep).to.eq(1)
+        expect(dependencyTask).to.have.been.calledOnce
         res.send('bar')
       },
     })
