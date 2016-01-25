@@ -66,14 +66,55 @@ describe('server route', function() {
       .expect(200, 'bar', done)
   })
 
-  it('should execute severak dependent tasks', function(done) {
-    server.task('main', ['depndency'], (req, res, next) => {
+  it('should execute default task when none specified', function(done) {
+    server.task('default', (req, res, next) => {
+      req.task = 1
+      next()
+    })
+
+    server.route({
+      method: 'GET',
+      path: '/foo',
+      handler(req, res) {
+        expect(req.task).to.eq(1)
+        res.send('bar')
+      },
+    })
+
+    request(server.express)
+      .get('/foo')
+      .expect(200, 'bar', done)
+  })
+
+  it('should not execute default task when false passed', function(done) {
+    server.task('default', (req, res, next) => {
+      req.task = 1
+      next()
+    })
+
+    server.route({
+      method: 'GET',
+      path: '/foo',
+      task: false,
+      handler(req, res) {
+        expect(req.task).to.not.exist
+        res.send('bar')
+      },
+    })
+
+    request(server.express)
+      .get('/foo')
+      .expect(200, 'bar', done)
+  })
+
+  it('should execute several dependent tasks', function(done) {
+    server.task('main', ['dependency'], (req, res, next) => {
       expect(req.dep).to.eq(1)
       req.main = 1
       next()
     })
 
-    server.task('depndency', (req, res, next) => {
+    server.task('dependency', (req, res, next) => {
       req.dep = 1
       next()
     })
@@ -84,6 +125,29 @@ describe('server route', function() {
       task: ['main'],
       handler(req, res) {
         expect(req.main).to.eq(1)
+        res.send('bar')
+      },
+    })
+
+    request(server.express)
+      .get('/foo')
+      .expect(200, 'bar', done)
+  })
+
+  it('should execute several dependent tasks. One of the task is just a group', function(done) {
+    server.task('main', ['dependency'])
+
+    server.task('dependency', (req, res, next) => {
+      req.dep = 1
+      next()
+    })
+
+    server.route({
+      method: 'GET',
+      path: '/foo',
+      task: ['main'],
+      handler(req, res) {
+        expect(req.dep).to.eq(1)
         res.send('bar')
       },
     })
