@@ -9,6 +9,7 @@ function extendWithRegister(server) {
   let registrator = remi(server)
   registrator.hook(require('remi-timeout')(5e3))
   registrator.hook(require('remi-runner')())
+  registrator.hook(require('remi-dependencies')())
   registrator.hook(require('remi-decorate')())
   registrator.hook(require('remi-expose')())
   registrator.hook(require('remi-realm')())
