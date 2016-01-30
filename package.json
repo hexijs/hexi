@@ -4,8 +4,7 @@
   "description": "A hapi skinned express",
   "main": "index.js",
   "files": [
-    "index.js",
-    "lib"
+    "index.js"
   ],
   "scripts": {
     "test": "mocha test/{**/,/}*.js",
@@ -19,6 +18,7 @@
     "url": "git+https://github.com/zkochan/hexi.git"
   },
   "keywords": [
+    "hexi",
     "hapi",
     "express"
   ],

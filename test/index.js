@@ -1,7 +1,7 @@
 'use strict'
 const chai = require('chai')
 const expect = chai.expect
-const Server = require('../lib/server')
+const hexi = require('..')
 const request = require('supertest')
 const plugiator = require('plugiator')
 const sinon = require('sinon')
@@ -12,7 +12,7 @@ describe('server route', function() {
   let server
 
   beforeEach(function() {
-    server = new Server()
+    server = hexi()
   })
 
   it('should execute handler', function(done) {
@@ -215,7 +215,7 @@ describe('Server', function() {
   let server
 
   beforeEach(function() {
-    server = new Server()
+    server = hexi()
   })
 
   it('should pass route, task methods to the plugin\'s serve object', function(done) {

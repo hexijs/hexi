@@ -1,7 +1,7 @@
 'use strict'
-const hexi = require('../')
+const hexi = require('..')
 
-let server = new hexi.Server()
+let server = hexi()
 
 server.connection(3000)
 
