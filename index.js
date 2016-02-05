@@ -7,16 +7,18 @@ const promiseResolver = require('promise-resolver')
 
 const slice = Array.prototype.slice
 
-function extendWithRegister(server) {
+function createRegister(server) {
   let registrator = remi(server)
-  registrator.hook(require('remi-timeout')(5e3))
-  registrator.hook(require('remi-runner')())
-  registrator.hook(require('remi-dependencies')())
-  registrator.hook(require('remi-decorate')())
-  registrator.hook(require('remi-expose')())
-  registrator.hook(require('remi-realm')())
+  registrator.hook(
+    require('remi-timeout')(5e3),
+    require('remi-runner')(),
+    require('remi-dependencies')(),
+    require('remi-decorate')(),
+    require('remi-expose')(),
+    require('remi-realm')()
+  )
 
-  server.register = registrator.register
+  return registrator.register
 }
 
 module.exports = function() {
@@ -92,7 +94,7 @@ module.exports = function() {
     },
   }
 
-  extendWithRegister(server)
+  server.register = createRegister(server)
 
   return server
 }
