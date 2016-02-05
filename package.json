@@ -15,19 +15,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zkochan/hexi.git"
+    "url": "git+https://github.com/hexijs/hexi.git"
   },
   "keywords": [
     "hexi",
     "hapi",
     "express"
   ],
-  "author": "Zoltan Kochan",
+  "author": {
+    "name": "Zoltan Kochan",
+    "email": "zoltan.kochan@gmail.com",
+    "url": "http://kochan.io"
+  },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zkochan/hexi/issues"
+    "url": "https://github.com/hexijs/hexi/issues"
   },
-  "homepage": "https://github.com/zkochan/hexi#readme",
+  "homepage": "https://github.com/hexijs/hexi#readme",
   "dependencies": {
     "express": "^4.13.3",
     "magic-hook": "^0.2.2",
