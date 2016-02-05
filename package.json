@@ -30,7 +30,7 @@
   "homepage": "https://github.com/zkochan/hexi#readme",
   "dependencies": {
     "express": "^4.13.3",
-    "magic-hook": "^0.1.1",
+    "magic-hook": "^0.2.2",
     "promise-resolver": "^3.0.0",
     "remi": "^0.5.0",
     "remi-decorate": "^0.1.1",

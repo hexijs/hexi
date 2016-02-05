@@ -2,8 +2,10 @@
 const express = require('express')
 const remi = require('remi')
 const sequencify = require('sequencify')
-const magicHook = require('magic-hook')
+const hook = require('magic-hook')
 const promiseResolver = require('promise-resolver')
+
+const slice = Array.prototype.slice
 
 function extendWithRegister(server) {
   let registrator = remi(server)
@@ -27,7 +29,7 @@ module.exports = function() {
   let server = {
     express: app,
     connection() {
-      connectionArgs = Array.prototype.slice.call(arguments)
+      connectionArgs = slice.call(arguments)
     },
     task(name) {
       let fn
@@ -45,7 +47,7 @@ module.exports = function() {
         fn,
       }
     },
-    route(opts) {
+    route: hook(opts => {
       opts.config = opts.config || {}
       opts.task = opts.task ? [].concat(opts.task) : []
 
@@ -78,7 +80,7 @@ module.exports = function() {
       methods
         .map(method => method.toLowerCase())
         .forEach(method => app[method].apply(app, [opts.path].concat(runTasks)))
-    },
+    }),
     start(cb) {
       let deferred = promiseResolver.defer(cb)
       if (connectionArgs) {
@@ -91,8 +93,6 @@ module.exports = function() {
   }
 
   extendWithRegister(server)
-
-  magicHook(server, ['route'])
 
   return server
 }
