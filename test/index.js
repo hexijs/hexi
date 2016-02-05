@@ -232,11 +232,15 @@ describe('server route', function() {
   })
 })
 
-describe('Server', function() {
+describe('server', function() {
   let server
 
   beforeEach(function() {
     server = hexi()
+  })
+
+  it('should have isHexi property', function() {
+    expect(server.isHexi).to.be.true
   })
 
   it('should pass route, task methods to the plugin\'s serve object', function(done) {

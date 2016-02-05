@@ -29,6 +29,7 @@ module.exports = function() {
   let connectionArgs
 
   let server = {
+    isHexi: true,
     express: app,
     connection() {
       connectionArgs = slice.call(arguments)
