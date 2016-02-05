@@ -1,6 +1,6 @@
 {
   "name": "hexi",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "A hapi skinned express",
   "main": "index.js",
   "files": [
