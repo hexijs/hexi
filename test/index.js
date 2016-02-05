@@ -209,6 +209,27 @@ describe('server route', function() {
       })
     ).to.throw(Error, 'does-not-exist task doesn\'t exist')
   })
+
+  describe('pre', function() {
+    it('should exec pre hook', function(done) {
+      server.route.pre(function(next, opts) {
+        opts.config = { foo: 'bar' }
+        next(opts)
+      })
+
+      server.route({
+        method: 'GET',
+        path: '/foo',
+        handler(req, res) {
+          res.send(req.route.settings.foo)
+        },
+      })
+
+      request(server.express)
+        .get('/foo')
+        .expect(200, 'bar', done)
+    })
+  })
 })
 
 describe('Server', function() {
@@ -229,5 +250,24 @@ describe('Server', function() {
         }),
       },
     ])
+  })
+
+  it('should start server', function(done) {
+    server.connection(5346)
+
+    server.route({
+      method: 'GET',
+      path: '/foo',
+      handler(req, res) {
+        res.send('bar')
+      },
+    })
+
+    return server.start()
+      .then(() =>
+        request(server.express)
+          .get('/foo')
+          .expect(200, 'bar', done)
+      )
   })
 })
