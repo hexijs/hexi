@@ -29,7 +29,7 @@ module.exports = function() {
   let route = hook(opts => {
     let middlewares = [
       (req, res, next) => {
-        req.route = { settings: opts.config }
+        req.route = opts
         next()
       },
     ].concat(opts.handler)

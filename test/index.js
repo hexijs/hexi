@@ -70,12 +70,12 @@ describe('server route', function() {
       .expect(200, 'bar', done)
   })
 
-  it('should pass settings to handler', function(done) {
+  it('should pass route options to handler', function(done) {
     server.route({
       method: 'GET',
       path: '/foo',
       handler(req, res) {
-        expect(req.route.settings).to.exist
+        expect(req.route).to.exist
         res.send('bar')
       },
     })
@@ -98,7 +98,7 @@ describe('server route', function() {
         method: 'GET',
         path: '/foo',
         handler(req, res) {
-          res.send(req.route.settings.foo)
+          res.send(req.route.config.foo)
         },
       })
 
