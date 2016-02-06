@@ -26,27 +26,34 @@ module.exports = function() {
 
   let connectionArgs
 
+  let route = hook(opts => {
+    let middlewares = [
+      (req, res, next) => {
+        req.route = { settings: opts.config }
+        next()
+      },
+    ].concat(opts.handler)
+
+    let methods = [].concat(opts.method)
+    methods
+      .map(method => method.toLowerCase())
+      .forEach(method => app[method].apply(app, [opts.path].concat(middlewares)))
+  })
+
+  route.pre((next, opts) => {
+    opts.config = opts.config || {}
+    opts.handler = opts.handler || []
+    opts.handler = [].concat(opts.handler)
+    next(opts)
+  })
+
   let server = {
     isHexi: true,
     express: app,
     connection() {
       connectionArgs = slice.call(arguments)
     },
-    route: hook(opts => {
-      opts.config = opts.config || {}
-
-      let middlewares = [
-        (req, res, next) => {
-          req.route = { settings: opts.config }
-          next()
-        },
-      ].concat(opts.handler)
-
-      let methods = [].concat(opts.method)
-      methods
-        .map(method => method.toLowerCase())
-        .forEach(method => app[method].apply(app, [opts.path].concat(middlewares)))
-    }),
+    route,
     start(cb) {
       let deferred = promiseResolver.defer(cb)
       if (connectionArgs && connectionArgs.length) {
