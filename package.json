@@ -42,8 +42,7 @@
     "remi-expose": "^0.2.0",
     "remi-realm": "^0.1.0",
     "remi-runner": "0.0.0",
-    "remi-timeout": "0.0.0",
-    "sequencify": "0.0.7"
+    "remi-timeout": "0.0.0"
   },
   "devDependencies": {
     "chai": "^3.4.1",
