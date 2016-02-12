@@ -50,7 +50,7 @@ describe('server route', function() {
   })
 
   it('should execute several handlers', function(done) {
-    let handler1 = sinon.spy((req, res, next) => next())
+    const handler1 = sinon.spy((req, res, next) => next())
 
     server.route({
       method: 'GET',

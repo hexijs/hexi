@@ -7,7 +7,7 @@ const promiseResolver = require('promise-resolver')
 const slice = Array.prototype.slice
 
 function createRegister(server) {
-  let registrator = remi(server)
+  const registrator = remi(server)
   registrator.hook(
     require('remi-timeout')(5e3),
     require('remi-runner')(),
@@ -21,20 +21,20 @@ function createRegister(server) {
 }
 
 module.exports = function() {
-  let app = express()
+  const app = express()
   app.disable('x-powered-by')
 
   let connectionArgs
 
-  let route = hook(opts => {
-    let middlewares = [
+  const route = hook(opts => {
+    const middlewares = [
       (req, res, next) => {
         req.route = opts
         next()
       },
     ].concat(opts.handler)
 
-    let methods = [].concat(opts.method)
+    const methods = [].concat(opts.method)
     methods
       .map(method => method.toLowerCase())
       .forEach(method => app[method].apply(app, [opts.path].concat(middlewares)))
@@ -47,7 +47,7 @@ module.exports = function() {
     next(opts)
   })
 
-  let server = {
+  const server = {
     isHexi: true,
     express: app,
     connection() {
@@ -55,7 +55,7 @@ module.exports = function() {
     },
     route,
     start(cb) {
-      let deferred = promiseResolver.defer(cb)
+      const deferred = promiseResolver.defer(cb)
       if (connectionArgs && connectionArgs.length) {
         app.listen.apply(app, connectionArgs.concat([deferred.cb]))
         return deferred.promise
