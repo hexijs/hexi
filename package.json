@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/hexijs/hexi#readme",
   "dependencies": {
-    "express": "^4.13.3",
+    "express": "4.x.x",
     "magic-hook": "^0.2.2",
     "promise-resolver": "^3.0.0",
     "remi": "^0.5.1",
