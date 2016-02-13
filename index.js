@@ -32,7 +32,8 @@ module.exports = function() {
         req.route = opts
         next()
       },
-    ].concat(opts.handler)
+    ].concat(opts.pre)
+    .concat(opts.handler || [])
 
     const methods = [].concat(opts.method)
     methods
@@ -42,8 +43,8 @@ module.exports = function() {
 
   route.pre((next, opts) => {
     opts.config = opts.config || {}
-    opts.handler = opts.handler || []
-    opts.handler = [].concat(opts.handler)
+    opts.pre = opts.pre || []
+    opts.pre = [].concat(opts.pre)
     next(opts)
   })
 

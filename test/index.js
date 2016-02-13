@@ -89,15 +89,15 @@ describe('server route', function() {
     it('should exec pre hook', function(done) {
       server.route.pre(function(next, opts) {
         opts.config = { foo: 'bar' }
-        expect(opts.handler).to.be.instanceof(Array)
-        expect(opts.handler.length).to.eq(1)
+        expect(opts.pre).to.be.instanceof(Array)
+        expect(opts.pre.length).to.eq(1)
         next(opts)
       })
 
       server.route({
         method: 'GET',
         path: '/foo',
-        handler(req, res) {
+        pre(req, res) {
           res.send(req.route.config.foo)
         },
       })
@@ -109,8 +109,8 @@ describe('server route', function() {
 
     it('should path empty array to route pre hook when no handler passed', function(done) {
       server.route.pre(function(next, opts) {
-        expect(opts.handler).to.be.instanceof(Array)
-        expect(opts.handler.length).to.eq(0)
+        expect(opts.pre).to.be.instanceof(Array)
+        expect(opts.pre.length).to.eq(0)
         done()
       })
 
