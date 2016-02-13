@@ -37,7 +37,7 @@
     "magic-hook": "^0.2.2",
     "promise-resolver": "^3.0.0",
     "remi": "^0.5.1",
-    "remi-decorate": "^0.1.1",
+    "remi-decorate": "^0.2.0",
     "remi-dependencies": "^0.1.1",
     "remi-expose": "^0.2.0",
     "remi-realm": "^0.1.0",
