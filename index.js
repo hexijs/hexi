@@ -36,9 +36,11 @@ module.exports = function() {
     .concat(opts.handler || [])
 
     const methods = [].concat(opts.method)
-    methods
-      .map(method => method.toLowerCase())
-      .forEach(method => app[method].apply(app, [opts.path].concat(middlewares)))
+    ;[].concat(opts.path).forEach(path =>
+      methods
+        .map(method => method.toLowerCase())
+        .forEach(method => app[method].apply(app, [path].concat(middlewares)))
+    )
   })
 
   route.pre((next, opts) => {

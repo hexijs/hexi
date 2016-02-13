@@ -50,6 +50,29 @@ describe('hexi', function() {
         })
     })
 
+    it('should listen to several paths', function(done) {
+      server.route({
+        method: 'GET',
+        path: [
+          '/foo',
+          '/bar',
+        ],
+        handler(req, res) {
+          res.send('bar')
+        },
+      })
+
+      request(server.express)
+        .get('/foo')
+        .expect(200, 'bar', function(err) {
+          if (err) return done(err)
+
+          request(server.express)
+            .get('/bar')
+            .expect(200, 'bar', done)
+        })
+    })
+
     it('should execute several handlers', function(done) {
       const handler1 = sinon.spy((req, res, next) => next())
 
