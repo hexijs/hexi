@@ -33,7 +33,6 @@
   },
   "homepage": "https://github.com/hexijs/hexi#readme",
   "dependencies": {
-    "express": "4.x.x",
     "magic-hook": "^0.2.2",
     "promise-resolver": "^3.0.0",
     "remi": "^0.5.1",
@@ -46,11 +45,15 @@
   },
   "devDependencies": {
     "chai": "^3.4.1",
+    "express": "4.x.x",
     "istanbul": "^0.4.2",
     "mocha": "^2.3.4",
     "plugiator": "^0.1.1",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0",
     "supertest": "^1.1.0"
+  },
+  "peerDependencies": {
+    "express": "4.x.x"
   }
 }

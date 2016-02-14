@@ -2,6 +2,7 @@
 const chai = require('chai')
 const expect = chai.expect
 const hexi = require('..')
+const express = require('express')
 const request = require('supertest')
 const plugiator = require('plugiator')
 const sinon = require('sinon')
@@ -12,7 +13,11 @@ describe('hexi', function() {
   let server
 
   beforeEach(function() {
-    server = hexi()
+    server = hexi(express())
+  })
+
+  it('should throw exception if no express app is passed', function() {
+    expect(() => hexi()).to.throw(Error, 'app is required')
   })
 
   describe('route', function() {
@@ -160,34 +165,5 @@ describe('hexi', function() {
         }),
       },
     ])
-  })
-
-  it('should start server', function(done) {
-    server.connection(5346)
-
-    server.route({
-      method: 'GET',
-      path: '/foo',
-      handler(req, res) {
-        res.send('bar')
-      },
-    })
-
-    return server.start()
-      .then(() =>
-        request(server.express)
-          .get('/foo')
-          .expect(200, 'bar', done)
-      )
-  })
-
-  it('should return error if no connection arguments passed', function(done) {
-    server.connection()
-
-    server.start()
-      .catch(err => {
-        expect(err).to.exist
-        done()
-      })
   })
 })

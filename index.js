@@ -1,5 +1,4 @@
 'use strict'
-const express = require('express')
 const remi = require('remi')
 const hook = require('magic-hook')
 const promiseResolver = require('promise-resolver')
@@ -20,11 +19,10 @@ function createRegister(server) {
   return registrator.register
 }
 
-module.exports = function() {
-  const app = express()
-  app.disable('x-powered-by')
+function hexi(app) {
+  if (!app) throw new Error('app is required')
 
-  let connectionArgs
+  app.disable('x-powered-by')
 
   const route = hook(opts => {
     const middlewares = [
@@ -53,22 +51,12 @@ module.exports = function() {
   const server = {
     isHexi: true,
     express: app,
-    connection() {
-      connectionArgs = slice.call(arguments)
-    },
     route,
-    start(cb) {
-      const deferred = promiseResolver.defer(cb)
-      if (connectionArgs && connectionArgs.length) {
-        app.listen.apply(app, connectionArgs.concat([deferred.cb]))
-        return deferred.promise
-      }
-      deferred.cb(new Error('no connection arguments were passed'))
-      return deferred.promise
-    },
   }
 
   server.register = createRegister(server)
 
   return server
 }
+
+module.exports = hexi
