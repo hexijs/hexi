@@ -33,15 +33,15 @@
   },
   "homepage": "https://github.com/hexijs/hexi#readme",
   "dependencies": {
-    "magic-hook": "^0.2.2",
+    "magic-hook": "^1.0.0",
     "promise-resolver": "^3.0.0",
-    "remi": "^0.5.1",
-    "remi-decorate": "^0.2.0",
-    "remi-dependencies": "^0.1.1",
-    "remi-expose": "^0.2.0",
-    "remi-realm": "^0.1.0",
-    "remi-runner": "0.0.0",
-    "remi-timeout": "0.0.0"
+    "remi": "^1.0.0",
+    "remi-decorate": "^1.0.0",
+    "remi-dependencies": "^1.0.0",
+    "remi-expose": "^1.0.0",
+    "remi-realm": "^1.0.0",
+    "remi-runner": "^1.0.0",
+    "remi-timeout": "^1.0.0"
   },
   "devDependencies": {
     "chai": "^3.4.1",
