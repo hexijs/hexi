@@ -1,37 +1,23 @@
 'use strict'
+module.exports = hexi
+
 const remi = require('remi')
 const hook = require('magic-hook')
-const promiseResolver = require('promise-resolver')
 
-const slice = Array.prototype.slice
-
-function createRegister(server) {
-  const registrator = remi(server)
-  registrator.hook(
-    require('remi-timeout')(5e3),
-    require('remi-runner')(),
-    require('remi-dependencies')(),
-    require('remi-decorate')(),
-    require('remi-expose')(),
-    require('remi-realm')()
-  )
-
-  return registrator.register
-}
-
-function hexi(app) {
+function hexi (app) {
   if (!app) throw new Error('app is required')
 
   app.disable('x-powered-by')
 
   const route = hook(opts => {
-    const middlewares = [
-      (req, res, next) => {
-        req.route = opts
-        next()
-      },
-    ].concat(opts.pre)
-    .concat(opts.handler || [])
+    const firstMiddleware = (req, res, next) => {
+      req.route = opts
+      next()
+    }
+
+    const middlewares = [firstMiddleware]
+      .concat(opts.pre)
+      .concat(opts.handler || [])
 
     const methods = [].concat(opts.method)
     ;[].concat(opts.path).forEach(path =>
@@ -59,4 +45,16 @@ function hexi(app) {
   return server
 }
 
-module.exports = hexi
+function createRegister (server) {
+  const registrator = remi(server)
+  registrator.hook(
+    require('remi-timeout')(5e3),
+    require('remi-runner')(),
+    require('remi-dependencies')(),
+    require('remi-decorate')(),
+    require('remi-expose')(),
+    require('remi-realm')()
+  )
+
+  return registrator.register
+}
