@@ -16,11 +16,13 @@ describe('hexi', function () {
   let server
 
   beforeEach(function () {
-    server = hexi(express())
+    server = hexi({
+      app: express(),
+    })
   })
 
-  it('should throw exception if no express app is passed', function () {
-    expect(() => hexi()).to.throw(Error, 'app is required')
+  it('should create express app if not passed', function () {
+    expect(hexi().express).to.exist
   })
 
   describe('route', function () {

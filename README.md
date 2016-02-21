@@ -59,6 +59,8 @@ module.exports = (server, opts) => {
 }
 ```
 
+For samples of advanced usage see the hexi version of the [hackathon starter](https://github.com/hexijs/hackathon-starter).
+
 
 ## License
 

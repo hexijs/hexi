@@ -1,11 +1,14 @@
 'use strict'
 module.exports = hexi
 
+const express = require('express')
 const remi = require('remi')
 const hook = require('magic-hook')
 
-function hexi (app) {
-  if (!app) throw new Error('app is required')
+function hexi (opts) {
+  opts = opts || {}
+
+  const app = opts.app || express()
 
   app.disable('x-powered-by')
 
