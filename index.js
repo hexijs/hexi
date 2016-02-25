@@ -54,7 +54,7 @@ function createRegister (server) {
     require('remi-timeout')(5e3),
     require('remi-runner')(),
     require('remi-dependencies')(),
-    require('remi-decorate')(),
+    require('remi-decorate').emulateHapi(),
     require('remi-expose')(),
     require('remi-realm')()
   )
