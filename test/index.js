@@ -26,6 +26,16 @@ describe('hexi', function () {
   })
 
   describe('route', function () {
+    it('should throw error when setting method as USE', function () {
+      expect(() => server.route({
+        method: 'USE',
+        path: '/foo',
+        handler (req, res) {
+          res.send('bar')
+        },
+      })).to.throw(Error, 'Illegal route method: USE')
+    })
+
     it('should execute handler', function (done) {
       server.route({
         method: 'GET',

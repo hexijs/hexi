@@ -22,10 +22,14 @@ function hexi (opts) {
       .concat(opts.pre)
       .concat(opts.handler || [])
 
-    const methods = [].concat(opts.method)
+    const methods = [].concat(opts.method).map(method => method.toLowerCase())
+
+    if (~methods.indexOf('use')) {
+      throw new Error('Illegal route method: USE')
+    }
+
     ;[].concat(opts.path).forEach(path =>
       methods
-        .map(method => method.toLowerCase())
         .forEach(method => app[method].apply(app, [path].concat(middlewares)))
     )
   })
